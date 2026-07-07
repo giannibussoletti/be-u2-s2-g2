@@ -1,6 +1,10 @@
 package gianni_bussoletti.be_u2_s2_g2.controllers;
 
+import gianni_bussoletti.be_u2_s2_g2.payloads.NewProductPayload;
+import gianni_bussoletti.be_u2_s2_g2.payloads.ProductPayloadResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController // diverso da @Controller
 //MEGLIO USARE RESTCONTROLLER
@@ -50,5 +54,27 @@ public class ExampleController {
 //    Con solo @RequestParam i dati da inserire nell'url sono obbligatori(Se non li inseriamo otterremo una bad request), quindi o mettiamo un defaultValue oppure un required=false che ritorna null come risposta dal server
     public String queryParameters(@RequestParam(defaultValue = "DEFAULT") String name, @RequestParam(defaultValue = "0") Integer age) {
         return "name: " + name + " age: " + age;
+    }
+
+    //    ----------------------------------PATH PARAMETERS----------------------------------
+//    Non hanno il punto di domanda ma hanno lo slash
+//    il path parameter va specificato nell'url
+    @GetMapping("pathParamExample/{param}")
+//    Il nome dato al placeholder tra le graffe nel mapping deve essere uguale a quello dato nel parametro del metodo
+//     GET http://localhost:5555/examples/pathParamExample/placeholder <--- Le parentesi graffe permettono di avere un segnaposto senza avere una parola specifica
+//    GET http://localhost:5555/examples/pathParamExample/223424
+//    GET http://localhost:5555/examples/pathParamExample/434343
+    public String pathParamExample(@PathVariable String param) {
+        return "il parametro passato è: " + param;
+    }
+
+    //    ----------------------------------REQUEST BODY----------------------
+    @PostMapping("/payloadExample")
+//    Per creare un payload da riceve dal client, dobbiamo creare una classe apposita che definisca il tipo del payload, con questa classe andiamo a definire quali sono gli attributi necessari(che riceveremo dal client sotto forma JSON) e il costruttore con tutti gli attributi necessari
+//    Se vogliamo ritornare un JSON al client, dobbiamo creare una classe e impostarla come Tipo del metodo, e lo manderà come payload della risposta
+    public ProductPayloadResponse payloadExample(@RequestBody NewProductPayload newProductPayload) // @RequestBody si occuperà di convertire il JSON ricevuto in un oggetto vero e proprio
+    {
+        System.out.println(newProductPayload.getName());
+        return new ProductPayloadResponse(1, LocalDateTime.now());
     }
 }
