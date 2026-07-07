@@ -21,20 +21,34 @@ public class ExampleController {
     }
 
     @PutMapping
-    public void putExample() {
+    public String putExample() {
+        return "La risposta arriva dell'Endpoint PUT ";
     }
 
     @PatchMapping
-    public void patchExample() {
+    public String patchExample() {
+        return "La risposta arriva dell'Endpoint PATCH ";
     }
 
     @DeleteMapping
-    public void deleteExample() {
+    public String deleteExample() {
+        return "La risposta arriva dell'Endpoint DELETE ";
     }
 
     @GetMapping("/getExample")//<-- Questo pezzo andrà dopo /examples, sarà la parte finale dell'url
     // Ci possono essere più endpoint con lo stesso meotodo di richiamo, l'importante è che non abbiano lo stesso url
     public String getExample2() {
         return "GetExamples";
+    }
+
+    //    ----------------------- QUERY PARAMETERS --------------------
+    @GetMapping("/queryParams")
+//    I query parameters vengono definiti solo a livello di metodo
+//    GET http://localhost:5555/examples/queryParams?name=Gianni&age=31
+//    Attenzione ai valori non passati, avranno valore null con tutte le conseguenze del caso
+//    Quindi o faccio dei controlli con if oppure posso sfruttare i defaultValuer, in maniera da non avere mai null
+//    Con solo @RequestParam i dati da inserire nell'url sono obbligatori(Se non li inseriamo otterremo una bad request), quindi o mettiamo un defaultValue oppure un required=false che ritorna null come risposta dal server
+    public String queryParameters(@RequestParam(defaultValue = "DEFAULT") String name, @RequestParam(defaultValue = "0") Integer age) {
+        return "name: " + name + " age: " + age;
     }
 }
