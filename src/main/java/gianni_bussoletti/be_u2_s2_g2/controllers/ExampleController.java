@@ -74,7 +74,6 @@ public class ExampleController {
 //    Se vogliamo ritornare un JSON al client, dobbiamo creare una classe e impostarla come Tipo del metodo, e lo manderà come payload della risposta
     public ProductPayloadResponse payloadExample(@RequestBody NewProductPayload newProductPayload) // @RequestBody si occuperà di convertire il JSON ricevuto in un oggetto vero e proprio
     {
-        System.out.println(newProductPayload.getName());
         return new ProductPayloadResponse(1, LocalDateTime.now());
     }
 }
